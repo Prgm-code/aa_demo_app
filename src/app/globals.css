@@ -2,26 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
+/* Puedes agregar tus estilos personalizados aquí, fuera de las directivas de Tailwind */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-gray-300; /* Utiliza la utilidad de color de fondo de Tailwind */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* O para usar un color específico que no está en la paleta de Tailwind: */
+  /* background: rgb(82, 72, 72); */
+  /* Para un fondo con imagen: */
+  /* background-image: url('/path-to-your-image.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed; */
 }
+
+/* Si quieres aplicar estilos al body globalmente, considera usar la clase directamente en el elemento body de tu _document.js o _document.tsx, en lugar de crear una clase separada */
