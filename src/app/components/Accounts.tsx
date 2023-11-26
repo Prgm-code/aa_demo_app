@@ -1,37 +1,42 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { Box, Divider, Grid, Typography, Paper, Button } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  LinearProgress,
+} from "@mui/material";
 import { EthHashInfo } from "@safe-global/safe-react-components";
 import useAccountAbstractionStore from "../../stores/accountAbstraccionStore";
 import { utils } from "ethers";
 import AmountLabel from "./AmountLabel";
 import usePolling from "@/hooks/usePolling";
 import RelayTransaction from "./RelayTransaction";
+import GelatoTaskStatusLabel from "./GelatoTaskStatusLabel";
 
 function Accounts() {
   const {
     web3Provider,
-    initialize,
-    cleanUp,
     isAuthenticated,
-    userInfo,
-    eoa,
-    safes,
     safeSelected,
     getSafeAddress,
     isDeployed,
+    isRelayerLoading,
+    gelatoTaskId,
+    chainId,
   } = useAccountAbstractionStore();
-;
-
   useEffect(() => {
     if (isAuthenticated) {
       getSafeAddress();
     }
-    
-  }, [ isAuthenticated , getSafeAddress]);
+  }, [isAuthenticated, getSafeAddress]);
+  const [transactionHash, setTransactionHash] = useState<string>("");
 
   const handleCreateAccountAbstractionContract = () => {
-   // getSafeAddress();
+    // getSafeAddress(); delete this logic
   };
 
   // fetch safe address balance with polling
@@ -54,7 +59,7 @@ function Accounts() {
         mb={3}
       >
         {!isAuthenticated ? (
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             <Paper
               elevation={3}
               sx={{
@@ -92,11 +97,10 @@ function Accounts() {
                   width: "100%",
                   maxWidth: "400px",
                   overflow: "auto", // Makes the content scrollable if it overflows
-
                 }}
               >
                 <Typography variant="h5" color="black" gutterBottom>
-                Smart Contract Account
+                  Smart Contract Account
                 </Typography>
                 <Divider
                   sx={{
@@ -112,11 +116,7 @@ function Accounts() {
                     alignItems="center"
                     flexDirection="column"
                   >
-                    <Box
-                    display="flex"
-                    alignItems="center"
-                    flexDirection="row"
-                    >
+                    <Box display="flex" alignItems="center" flexDirection="row">
                       <EthHashInfo
                         address={safeSelected}
                         showCopyButton
@@ -124,9 +124,9 @@ function Accounts() {
                         prefix={getPrefix("0x5")}
                         hasExplorer={true}
                         ExplorerButtonProps={{
-                            title: "View on Etherscan",
-                            href: `https://goerli.etherscan.io/address/${safeSelected}`,
-                          }}
+                          title: "View on Etherscan",
+                          href: `https://goerli.etherscan.io/address/${safeSelected}`,
+                        }}
                       />
                       <Typography variant="caption" sx={{ mt: 1 }}>
                         {isDeployed
@@ -135,12 +135,14 @@ function Accounts() {
                       </Typography>
                     </Box>
 
-                    <Typography fontWeight="700"
-                    sx={{
-                        fontSize: '0.75rem', // Reduce el tamaño de la fuente
-                        color: 'black', // Cambia el color del texto
+                    <Typography
+                      fontWeight="700"
+                      sx={{
+                        fontSize: "0.75rem", // Reduce el tamaño de la fuente
+                        color: "black", // Cambia el color del texto
                         mt: 0.5, // Margen superior para separar de la línea del nombre
-                      }}>
+                      }}
+                    >
                       <AmountLabel
                         amount={utils.formatEther(safeBalance || "0")}
                         tokenSymbol={/* chain?.token || */ "gETH"}
@@ -175,19 +177,16 @@ function Accounts() {
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between", // Asegura que el contenido se distribuya uniformemente
-                  minHeight: "150px", // Ajusta este valor según la altura deseada
+                  justifyContent: "space-between",
+                  minHeight: "150px",
                   borderRadius: "16px",
                   bgcolor: "background.paper",
                   width: "100%",
                   maxWidth: "400px",
                   overflow: "auto", // Makes the content scrollable if it overflows
-
                 }}
               >
-                {safeSelected ? (
-                    <RelayTransaction />
-                ) : (
+                {!safeSelected ? (
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -205,6 +204,41 @@ function Accounts() {
                       Create AAC
                     </Button>
                   </Box>
+                ) : (
+                  <>
+                    {gelatoTaskId && (
+                      <>
+                        <GelatoTaskStatusLabel
+                          gelatoTaskId={gelatoTaskId}
+                          chainId={chainId}
+                          setTransactionHash={setTransactionHash}
+                          transactionHash={transactionHash}
+                        />
+                        {/* <Button
+                          onClick={() => {}}
+                          size="small" // Change the size to 'large', 'medium', or 'small'
+                          color="inherit" // This will use the primary color from your theme
+                          sx={{
+                            backgroundColor: "#4caf50", // Use a hex color or a color name like 'green'
+                            "&:hover": {
+                              backgroundColor: "#388e3c", // Darken color on hover
+                            },
+                            width: "auto", // Set the width as needed, or use 'auto' to size based on content
+                            padding: "8px 16px", // Adjust padding to make the button larger
+                            fontSize: "1rem",
+                          }}
+                        >
+                          New Transaction
+                        </Button> */}
+                      </>
+                    )}
+
+                    {isRelayerLoading && (
+                      <LinearProgress sx={{ alignSelf: "stretch" }} />
+                    )}
+
+                    {!isRelayerLoading && !gelatoTaskId && <RelayTransaction />}
+                  </>
                 )}
               </Paper>
             </Grid>

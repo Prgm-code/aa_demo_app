@@ -1,3 +1,5 @@
+
+import Chain from '../models/Chain';
 import { create } from "zustand";
 import { Web3AuthModalPack, Web3AuthConfig } from "@safe-global/auth-kit";
 import { Web3AuthOptions } from "@web3auth/modal";
@@ -7,8 +9,8 @@ import { Web3AuthEventListener } from "../packs/web3auth/types";
 import AccountAbstraction from "@safe-global/account-abstraction-kit-poc";
 import { GelatoRelayPack } from "@safe-global/relay-kit";
 import Safe,{ EthersAdapter } from '@safe-global/protocol-kit'
-import { MetaTransactionData, MetaTransactionOptions } from '@safe-global/safe-core-sdk-types'
-
+import { MetaTransactionData, MetaTransactionOptions } from '@safe-global/safe-core-sdk-types';
+import getChain from '@/utils/getChain';
 
 
 import dotenv from "dotenv";
@@ -50,8 +52,12 @@ interface AccountAbstractionState {
   address?: string;
   network?: ethers.providers.Network;
   chainId?: string;
+  chain?: Chain;
   balance: undefined;
   ethAdapter?: Promise<any>;
+  isRelayerLoading: boolean;
+  gelatoTaskId?: string;
+
 
   // Acciones
   relaySendTransaction: (address: string, amount: string) => Promise<void>;
@@ -79,7 +85,8 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
     safeSelected: null,
     safeAccountAbstraction: undefined,
     eoa: "",
-
+    isRelayerLoading: false, 
+    gelatoTaskId: undefined,
     isDeployed: false,
     signer: {} as ethers.Signer,
     address: "",
@@ -92,6 +99,8 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
     // Acciones
     initialize: async () => {
       const {  chainId } = get();
+      const chain = getChain(chainId);
+      set({ chain: chain });
       const options: Web3AuthOptions = {
         clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || "",
         web3AuthNetwork: "testnet",
@@ -223,7 +232,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
         signer: undefined,
         address: "",
         network: undefined,
-        chainId: "",
+        chainId: "0x5",
       });
     },
 
@@ -280,6 +289,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
    relaySendTransaction: async (address: string, amount: string) => {
     const { web3Provider, safeSelected, isDeployed } = get();
     if (!web3Provider || !safeSelected) {
+      set({ isRelayerLoading: true });
       console.error("Web3 provider or Safe not initialized");
       return;
     }
@@ -307,7 +317,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
       };
   
       const gelatoTaskId = await safeAccountAbstraction.relayTransaction(transactionData, options);
-  
+      set({ isRelayerLoading: false, gelatoTaskId: gelatoTaskId });
       console.log(`Transaction relayed with Gelato Task ID: ${gelatoTaskId}`);
       if (!isDeployed) {
         await safeAccountAbstraction.isSafeDeployed()
