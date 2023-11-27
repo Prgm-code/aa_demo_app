@@ -26,10 +26,14 @@ import {
 import GnosisSafeContractEthers from "@safe-global/safe-ethers-lib/dist/src/contracts/GnosisSafe/GnosisSafeContractEthers";
 dotenv.config();
 
-console.log(
-  "process.env.REACT_APP_WEB3AUTH_CLIENT_ID",
-  process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID
-);
+
+
+interface MetaTransactionOptions_ {
+  gasLimit: string;
+  gasToken?: string;
+  isSponsored?: boolean;
+}
+
 
 const connectedHandler: Web3AuthEventListener = (data) =>
   console.log("CONNECTED", data);
@@ -331,7 +335,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
         },
       ];
   
-      const options: MetaTransactionOptions = {
+      const options: MetaTransactionOptions_ = {
         isSponsored: false,
         gasLimit: "6000000", // In this alpha version we need to manually set the gas limit
         gasToken: ethers.constants.AddressZero, // Native token
