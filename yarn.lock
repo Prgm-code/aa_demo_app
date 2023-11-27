@@ -783,13 +783,6 @@
     semver "^7.3.8"
     superstruct "^1.0.3"
 
-"@monerium/sdk@^2.3.0":
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/@monerium/sdk/-/sdk-2.8.0.tgz#b41f87e2f2d05f49d8a1134034f3025dbe19caa5"
-  integrity sha512-OV9lE1ObIaRwZ2UVcX/5JrdvvnEKqca0tJmHIYvPI9vo7GOf7QmzC/EHaqandhfpvkEraYxgoAUk7ywVFqQZvg==
-  dependencies:
-    crypto-js "^4.2.0"
-
 "@mui/base@5.0.0-beta.24":
   version "5.0.0-beta.24"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-beta.24.tgz#1a0638388291828dacf9547b466bc21fbaad3a2a"
@@ -1026,21 +1019,12 @@
     "@web3auth/openlogin-adapter" "^4.3.0"
     ethers "^5.7.2"
 
-"@safe-global/onramp-kit@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@safe-global/onramp-kit/-/onramp-kit-1.4.0.tgz#3fe5dd379462ff0892804ceb64c511b7bd4187cd"
-  integrity sha512-vfzA/APdDEnrFL7uub+8VH4pUhOc0/zeAvYOYVnrKNX1FAlyaGjnEBem1zxryeFpRRVhHQMgOwxQsHPdK6BAzw==
+"@safe-global/onramp-kit@^0.1.0-alpha.2":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@safe-global/onramp-kit/-/onramp-kit-0.1.1.tgz#09e4b3c99faddf8e65e0755a64c7803c5d9df87c"
+  integrity sha512-/qhm3CgIGDRzEH6DsW64Eon400Owt3FpAVwD7DxCjfaxFwZLP4Wh7DOdhYG+W/8GuzcQwupJfU5H3Eomj42hWg==
   dependencies:
-    "@ethersproject/abi" "^5.7.0"
     "@ethersproject/address" "^5.7.0"
-    "@ethersproject/bytes" "^5.7.0"
-    "@ethersproject/hash" "^5.7.0"
-    "@monerium/sdk" "^2.3.0"
-    "@safe-global/api-kit" "^1.3.0"
-    "@safe-global/protocol-kit" "^1.3.0"
-    "@safe-global/safe-core-sdk-types" "^2.3.0"
-    "@stripe/crypto" "^0.0.4"
-    "@stripe/stripe-js" "^1.52.0"
 
 "@safe-global/protocol-kit@^1.3.0":
   version "1.3.0"
@@ -1216,7 +1200,7 @@
   resolved "https://registry.yarnpkg.com/@stripe/crypto/-/crypto-0.0.4.tgz#51dbcb3750c75a6b8a6c8775381af82367359146"
   integrity sha512-gcD/aG0N90ZrNVppWYf9ADPECptw6PVtF67VIeaFP7fhgd2NvNx8erkzlcvk3VIVSY+bZ6YGX7c7cASoySX74Q==
 
-"@stripe/stripe-js@^1.52.0", "@stripe/stripe-js@^1.52.1":
+"@stripe/stripe-js@^1.52.1":
   version "1.54.2"
   resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.54.2.tgz#0665848e22cbda936cfd05256facdfbba121438d"
   integrity sha512-R1PwtDvUfs99cAjfuQ/WpwJ3c92+DAMy9xGApjqlWQMj0FKQabUAys2swfTRNzuYAYJh7NqK2dzcYVNkKLEKUg==
@@ -2881,11 +2865,6 @@ cross-spawn@^7.0.2:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
-
-crypto-js@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
-  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 css.escape@^1.5.1:
   version "1.5.1"
