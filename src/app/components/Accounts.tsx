@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -27,6 +27,12 @@ function Accounts() {
     isRelayerLoading,
     gelatoTaskId,
     chainId,
+    chain,
+    login,
+    logout,
+    modalPackError,
+    setBalance,
+
   } = useAccountAbstractionStore();
   useEffect(() => {
     if (isAuthenticated) {
@@ -34,10 +40,14 @@ function Accounts() {
     }
   }, [isAuthenticated, getSafeAddress]);
   const [transactionHash, setTransactionHash] = useState<string>("");
+  useEffect(() => {
+    if (modalPackError) {
+        console.log("modalPackError", modalPackError);
+        logout();    
+    }
+    }
+    , [modalPackError, logout]);    
 
-  const handleCreateAccountAbstractionContract = () => {
-    // getSafeAddress(); delete this logic
-  };
 
   // fetch safe address balance with polling
   const fetchSafeBalance = useCallback(async () => {
@@ -47,6 +57,12 @@ function Accounts() {
   }, [web3Provider, safeSelected]);
 
   const safeBalance = usePolling(fetchSafeBalance);
+  useEffect(() => {
+      setBalance(safeBalance);
+  }
+, [safeBalance, setBalance]);
+
+
 
   return (
     <div>
@@ -76,9 +92,19 @@ function Accounts() {
                 backdropFilter: "blur(10px)",
               }}
             >
-              <Typography variant="h6" textAlign="center">
-                Login to see your addresses
+              <Typography variant="h6" textAlign="center" sx={{ mb: 2 }}>
+                Welcome to Account Abstraction
               </Typography>
+              <Typography textAlign="center" sx={{ mb: 4 }}>
+                Click below to connect your wallet and continue.
+              </Typography>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={login}
+              >
+                Connect Wallet
+              </Button>
             </Paper>
           </Grid>
         ) : (
@@ -121,11 +147,11 @@ function Accounts() {
                         address={safeSelected}
                         showCopyButton
                         showPrefix
-                        prefix={getPrefix("0x5")}
+                        prefix={getPrefix(chainId || "0x5")}
                         hasExplorer={true}
                         ExplorerButtonProps={{
                           title: "View on Etherscan",
-                          href: `https://goerli.etherscan.io/address/${safeSelected}`,
+                          href: `${chain?.blockExplorerUrl}/address/${safeSelected}`,
                         }}
                       />
                       <Typography variant="caption" sx={{ mt: 1 }}>
@@ -145,7 +171,7 @@ function Accounts() {
                     >
                       <AmountLabel
                         amount={utils.formatEther(safeBalance || "0")}
-                        tokenSymbol={/* chain?.token || */ "gETH"}
+                        tokenSymbol={chain?.token || "gETH"}
                       />
                     </Typography>
                   </Box>
@@ -158,14 +184,6 @@ function Accounts() {
                   >
                     <Typography>Skeleton</Typography>{" "}
                     {/* cambiar por un skeleton ... */}
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={handleCreateAccountAbstractionContract}
-                      sx={{ mt: 2 }}
-                    >
-                      Create AAC
-                    </Button>
                   </Box>
                 )}
               </Paper>
@@ -195,14 +213,6 @@ function Accounts() {
                   >
                     <Typography>No Available Safes</Typography>{" "}
                     {/* cambiar por un skeleton ... */}
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={handleCreateAccountAbstractionContract}
-                      sx={{ mt: 2 }}
-                    >
-                      Create AAC
-                    </Button>
                   </Box>
                 ) : (
                   <>
@@ -214,22 +224,7 @@ function Accounts() {
                           setTransactionHash={setTransactionHash}
                           transactionHash={transactionHash}
                         />
-                        {/* <Button
-                          onClick={() => {}}
-                          size="small" // Change the size to 'large', 'medium', or 'small'
-                          color="inherit" // This will use the primary color from your theme
-                          sx={{
-                            backgroundColor: "#4caf50", // Use a hex color or a color name like 'green'
-                            "&:hover": {
-                              backgroundColor: "#388e3c", // Darken color on hover
-                            },
-                            width: "auto", // Set the width as needed, or use 'auto' to size based on content
-                            padding: "8px 16px", // Adjust padding to make the button larger
-                            fontSize: "1rem",
-                          }}
-                        >
-                          New Transaction
-                        </Button> */}
+     
                       </>
                     )}
 
@@ -254,12 +249,16 @@ export default Accounts;
 const getPrefix = (chainId: string) => {
   switch (chainId) {
     case "0x1":
-      return "eth";
+      return "Eth";
     case "0x5":
-      return "gor";
+      return "gEth";
     case "0x100":
       return "gno";
-    case "0x137":
+    case "0x64":
+      return "xdai";
+    case "0x89":
+      return "matic";
+    case "0x13881":
       return "matic";
     default:
       return "eth";

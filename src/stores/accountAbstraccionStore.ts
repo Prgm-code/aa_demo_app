@@ -10,7 +10,8 @@ import AccountAbstraction from "@safe-global/account-abstraction-kit-poc";
 import { GelatoRelayPack } from "@safe-global/relay-kit";
 import Safe,{ EthersAdapter } from '@safe-global/protocol-kit'
 import { MetaTransactionData, MetaTransactionOptions } from '@safe-global/safe-core-sdk-types';
-import getChain from '@/utils/getChain';
+import getChain  from '@/utils/getChain';
+import { initialChain } from '@/chains/chains';
 
 
 import dotenv from "dotenv";
@@ -38,6 +39,7 @@ const disconnectedHandler: Web3AuthEventListener = (data) =>
 // Define el tipo de estado y las acciones para TypeScript
 interface AccountAbstractionState {
   isAuthenticated: boolean;
+  initializeChain: boolean;
   isInitialized: boolean;
   userInfo: any; // Define un tipo más específico si es posible
   web3Provider: ethers.providers.Web3Provider;
@@ -57,9 +59,11 @@ interface AccountAbstractionState {
   ethAdapter?: Promise<any>;
   isRelayerLoading: boolean;
   gelatoTaskId?: string;
-
-
+  relayError?: Error;
+  modalPackError?: Error;
   // Acciones
+  clearTx: () => void;
+  setChainId: (newChainId: string) => void;
   relaySendTransaction: (address: string, amount: string) => Promise<void>;
   setBalance: (newBalance: any) => void;
   getSafeAddress: () => Promise<void>;
@@ -68,13 +72,13 @@ interface AccountAbstractionState {
   login: () => Promise<void>;
   logout: () => void;
 
-  // Agrega aquí más estados y acciones según sea necesario
 }
 
 // Crea la store con Zustand
 const useAccountAbstractionStore = create<AccountAbstractionState>(
   (set, get) => ({
     // Estado inicial
+    initializeChain: false,
     isInitialized: false,
     isAuthenticated: false,
     userInfo: {},
@@ -94,20 +98,32 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
     chainId: "0x5",
     balance: undefined,
     ethAdapter: undefined,
+    relayError: undefined,
+    modalPackError: undefined,    
+    // Acciones
+    clearTx: () => set({ gelatoTaskId: undefined, relayError: undefined}),
     setBalance: (newBalance) => set({ balance: newBalance }),
 
-    // Acciones
+    setChainId: (newChainId) => {
+      const chain = getChain(newChainId) || initialChain;
+      console.log("chain", chain);
+      set({ chainId: newChainId, chain: chain });
+    },
+
+
     initialize: async () => {
-      const {  chainId } = get();
-      const chain = getChain(chainId);
+      const { chainId } = get();
+      const  chain = getChain(chainId) || initialChain;
+      console.log("chain", chain);
       set({ chain: chain });
+  
       const options: Web3AuthOptions = {
         clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || "",
         web3AuthNetwork: "testnet",
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: chainId,
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
+          rpcTarget: chain?.rpcUrl  //"https://rpc.ankr.com/eth_goerli",
         },
         uiConfig: {
           theme: "dark",
@@ -128,7 +144,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
       };
 
       const web3AuthConfig: Web3AuthConfig = {
-        txServiceUrl: "https://safe-transaction-goerli.safe.global",
+        txServiceUrl: chain?.transactionServiceUrl,
       };
 
       const openloginAdapter = new OpenloginAdapter({
@@ -170,6 +186,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
       const { web3AuthModalPack, isDeployed, getSafeAddress} = get(); //to get the current state
       if (!web3AuthModalPack) {
         console.error("Web3AuthModalPack no está inicializado.");
+        set({ modalPackError: new Error("Web3AuthModalPack no está inicializado.") });
         return;
       }
 
@@ -234,6 +251,9 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
         network: undefined,
         chainId: "0x5",
       });
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
     },
 
     cleanUp: () => {
@@ -290,6 +310,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
     const { web3Provider, safeSelected, isDeployed } = get();
     if (!web3Provider || !safeSelected) {
       set({ isRelayerLoading: true });
+      set({ relayError: new Error("Web3 provider or Safe not initialized") });
       console.error("Web3 provider or Safe not initialized");
       return;
     }
@@ -325,6 +346,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
       }
     } catch (error) {
       console.error(`Error relaying transaction: ${error}`);
+      set({ isRelayerLoading: false, relayError: error as Error });
     }
   },
   })

@@ -11,12 +11,6 @@ import { useEffect, useState } from "react";
 import useAccountAbstractionStore from "../../stores/accountAbstraccionStore";
 import { EthHashInfo } from "@safe-global/safe-react-components";
 
-type AppBarProps = {
-  isLoggedIn: boolean;
-  onLogin: () => void;
-  onLogout: () => void;
-  userInfo?: any;
-};
 
 const AppBar = () => {
   const {
@@ -33,12 +27,7 @@ const AppBar = () => {
     // Asegúrate de incluir cualquier otra parte del estado que necesites
   } = useAccountAbstractionStore();
 
-  useEffect(() => {
-    initialize();
-    return () => {
-      cleanUp();
-    };
-  }, [initialize, cleanUp]);
+
 
   useEffect(() => {
     console.log("use Effect userInfo", userInfo);
@@ -88,7 +77,7 @@ const AppBar = () => {
             
             </Box>
             <Button
-              variant="contained"
+              variant="outlined"
               onClick={logout}
               size="small" // Esto hace el botón más pequeño
               sx={{ ml: 2, py: 0.5, px: 2 }} // Ajusta el padding vertical (py) y horizontal (px) según necesites

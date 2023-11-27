@@ -26,10 +26,10 @@ function useApi<T>(apiCall: apiCallParam<T>, pollingTime?: number): useApiHookRe
       }
     }
 
-    let intervalId: NodeJS.Timer
+    let intervalId: number | undefined;
 
     if (pollingTime) {
-      intervalId = setInterval(() => {
+      intervalId = window.setInterval(() => {
         performApiCall()
       }, pollingTime)
     }

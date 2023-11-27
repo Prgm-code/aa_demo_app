@@ -1,15 +1,17 @@
 "use client";
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Box, Button, Divider, TextField, Typography, CircularProgress, Alert } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { useState, useEffect } from "react";
 import useAccountAbstractionStore from "../../stores/accountAbstraccionStore";
 
 function RelayTransaction() {
-  const { chainId, relaySendTransaction } = useAccountAbstractionStore();
+  const { chainId, relaySendTransaction, relayError ,balance} = useAccountAbstractionStore();
 
   const [recipientAddress, setRecipientAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [prefix, setPrefix] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (chainId) {
@@ -17,26 +19,48 @@ function RelayTransaction() {
     }
   }, [chainId]);
 
-  return (
+  useEffect(() => {
+    if (relayError) {
+      setError(relayError instanceof Error ? relayError.message : "An unknown error occurred");
+    }
+  }
+  , [relayError]);
+
+const checkBalance = () => {
+  console.log("balance", balance);
+  console.log("amount", amount);  
+
+  if (Number(amount) > Number(balance)) {
+    console.log("You don't have enough funds to send this amount");
+    throw new Error("You don't have enough funds to send this amount");
+  }
+}
+
+  const handleSendClick = async () => {
+    setIsSending(true);
+    setError(""); // Reset any previous errors
+    try {
+     checkBalance();
+      await relaySendTransaction(recipientAddress, amount);
+    } catch (err: any) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
+    }
+    setIsSending(false);
+  };
+
+
+ return (
     <Box
       display="flex"
       flexDirection="column"
       gap={2}
-      alignItems="center" // Centra los elementos en el eje horizontal
-      justifyContent="center" // Centra los elementos en el eje vertical si es necesario
-      width={300} // Establece un ancho fijo más pequeño
-       // Añade un padding para que no esté todo tan pegado a los bordes
+      alignItems="center"
+      justifyContent="center"
+      width={300}
       mx="auto"
     >
       <Typography fontWeight="700">Send {prefix}</Typography>
-      <Divider
-        sx={{
-          width: "100%",
-         
-          bgcolor: "gray", // Añade un color de fondo
-          height: "1px", // Aumenta la altura del Divider para hacerlo más grueso
-        }}
-      />
+      <Divider sx={{ width: "100%", bgcolor: "gray", height: "1px" }} />
 
       <TextField
         label="Recipient Address"
@@ -44,6 +68,7 @@ function RelayTransaction() {
         fullWidth
         value={recipientAddress}
         onChange={(e) => setRecipientAddress(e.target.value)}
+        disabled={isSending}
       />
 
       <TextField
@@ -52,15 +77,27 @@ function RelayTransaction() {
         fullWidth
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+        disabled={isSending}
       />
 
       <Button
-        startIcon={<SendIcon />}
+        startIcon={isSending ? <CircularProgress size={14} /> : <SendIcon />}
         variant="outlined"
-        onClick={() => relaySendTransaction(recipientAddress, amount)}
+        onClick={handleSendClick}
+        disabled={isSending}
       >
-        Send
+        {isSending ? "Sending..." : "Send"}
       </Button>
+
+      {error  && (
+        <Alert
+          severity="error"
+          onClose={() => setError("")} // Clear error when the user closes the alert
+          sx={{ mt: 2, width: '100%' }}
+        >
+          {error}
+        </Alert>
+      )}
     </Box>
   );
 }
@@ -75,7 +112,11 @@ const getPrefix = (chainId: string) => {
       return "gEth";
     case "0x100":
       return "gno";
-    case "0x137":
+    case "0x64":
+      return "xdai";
+    case "0x89":
+      return "matic";
+    case "0x13881":
       return "matic";
     default:
       return "eth";

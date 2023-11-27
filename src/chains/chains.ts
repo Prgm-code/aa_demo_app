@@ -67,6 +67,6 @@ export const mumbaiChain: Chain = {
 
 const chains: Chain[] = [gnosisChain, goerliChain, mainnetChain, mumbaiChain, polygonChain]
 
-export const initialChain = mumbaiChain
+export const initialChain = goerliChain
 
 export default chains
