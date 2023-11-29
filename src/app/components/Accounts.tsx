@@ -8,6 +8,7 @@ import {
   Paper,
   Button,
   LinearProgress,
+  Skeleton,
 } from "@mui/material";
 import { EthHashInfo } from "@safe-global/safe-react-components";
 import useAccountAbstractionStore from "../../stores/accountAbstraccionStore";
@@ -32,7 +33,6 @@ function Accounts() {
     logout,
     modalPackError,
     setBalance,
-
   } = useAccountAbstractionStore();
   useEffect(() => {
     if (isAuthenticated) {
@@ -42,12 +42,10 @@ function Accounts() {
   const [transactionHash, setTransactionHash] = useState<string>("");
   useEffect(() => {
     if (modalPackError) {
-        console.log("modalPackError", modalPackError);
-        logout();    
+      console.log("modalPackError", modalPackError);
+      logout();
     }
-    }
-    , [modalPackError, logout]);    
-
+  }, [modalPackError, logout]);
 
   // fetch safe address balance with polling
   const fetchSafeBalance = useCallback(async () => {
@@ -58,11 +56,8 @@ function Accounts() {
 
   const safeBalance = usePolling(fetchSafeBalance);
   useEffect(() => {
-      setBalance(safeBalance);
-  }
-, [safeBalance, setBalance]);
-
-
+    setBalance(safeBalance);
+  }, [safeBalance, setBalance]);
 
   return (
     <div>
@@ -98,11 +93,7 @@ function Accounts() {
               <Typography textAlign="center" sx={{ mb: 4 }}>
                 Click below to connect your wallet and continue.
               </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={login}
-              >
+              <Button variant="outlined" color="primary" onClick={login}>
                 Connect Wallet
               </Button>
             </Paper>
@@ -181,9 +172,16 @@ function Accounts() {
                     flexDirection="column"
                     alignItems="center"
                     my={2}
+                    width="100%"
                   >
-                    <Typography>Skeleton</Typography>{" "}
-                    {/* cambiar por un skeleton ... */}
+                    <Skeleton
+                      variant="rectangular"
+                      width="80%"
+                      height={80} // Altura de la caja
+                      sx={{ mt: 2 }}
+                      animation="wave"
+                      style={{ borderRadius: '10px' }}
+                    />
                   </Box>
                 )}
               </Paper>
@@ -209,10 +207,32 @@ function Accounts() {
                     display="flex"
                     flexDirection="column"
                     alignItems="center"
-                    my={2}
+                    my={1}
+                    width="100%"
                   >
-                    <Typography>No Available Safes</Typography>{" "}
-                    {/* cambiar por un skeleton ... */}
+                    <Divider
+                  sx={{
+                    width: "100%",
+                    my: 1,
+                    bgcolor: "gray",
+                    height: "1px",
+                  }}
+                />
+                    <Skeleton
+                      variant="rectangular"
+                      width="80%"
+                      height={60}
+                      animation="wave"
+                      style={{ borderRadius: '10px' }}
+                    />
+                    <Skeleton
+                      variant="rectangular"
+                      width="80%"
+                      height={60}
+                      sx={{ mt: 2 }}
+                      animation="wave"
+                      style={{ borderRadius: '10px' }}
+                    />
                   </Box>
                 ) : (
                   <>
@@ -224,7 +244,6 @@ function Accounts() {
                           setTransactionHash={setTransactionHash}
                           transactionHash={transactionHash}
                         />
-     
                       </>
                     )}
 
