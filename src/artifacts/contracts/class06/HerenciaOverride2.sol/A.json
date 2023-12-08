@@ -1,0 +1,39 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "A",
+  "sourceName": "contracts/class06/HerenciaOverride2.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "a",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "b",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "c",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "d",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b5060a98061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060465760003560e01c80630dbe671f14604b5780634df7e3d01460535780638a054ac214605b578063c3da42b8146063575b600080fd5b6051606b565b005b6059606d565b005b6061606f565b005b60696071565b005b565b565b565b56fea2646970667358221220f0e7966a09211e235e64e2a44885948cb5dc38259d0b3cac3224e1a5e278e6f364736f6c63430008130033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060465760003560e01c80630dbe671f14604b5780634df7e3d01460535780638a054ac214605b578063c3da42b8146063575b600080fd5b6051606b565b005b6059606d565b005b6061606f565b005b60696071565b005b565b565b565b56fea2646970667358221220f0e7966a09211e235e64e2a44885948cb5dc38259d0b3cac3224e1a5e278e6f364736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -1,0 +1,32 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Desafio_1",
+  "sourceName": "contracts/desafios/Desafio_1.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "guardarActivoDoble",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "guardarActivoSimple",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "guardarActivoTriple",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b5060958061001e6000396000f3fe6080604052348015600f57600080fd5b5060043610603c5760003560e01c806353129f73146041578063744893fa146049578063cb69253f146051575b600080fd5b60476059565b005b604f605b565b005b6057605d565b005b565b565b56fea2646970667358221220bacab9593378293c349fcbf4a1df3ca453476487219f2e4cc712a8c9b425db2f64736f6c63430008130033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b5060043610603c5760003560e01c806353129f73146041578063744893fa146049578063cb69253f146051575b600080fd5b60476059565b005b604f605b565b005b6057605d565b005b565b565b56fea2646970667358221220bacab9593378293c349fcbf4a1df3ca453476487219f2e4cc712a8c9b425db2f64736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

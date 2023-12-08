@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Padre",
+  "sourceName": "contracts/class06/HerenciaModifiers2.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220be7f09a5349eb8d554bc83abf8009eb7a24a48f8e6e77fb8f45eeb8ebde663be64736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220be7f09a5349eb8d554bc83abf8009eb7a24a48f8e6e77fb8f45eeb8ebde663be64736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

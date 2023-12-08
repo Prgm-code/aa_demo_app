@@ -1,0 +1,50 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "View",
+  "sourceName": "contracts/class07/View.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "number",
+          "type": "uint256"
+        }
+      ],
+      "name": "Number",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "functionView",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "functionView3",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x60806040526402dddef9f860005534801561001957600080fd5b5060e3806100286000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c80636800635e146037578063e77866fa146051575b600080fd5b603d606b565b604051604891906094565b60405180910390f35b60576074565b604051606291906094565b60405180910390f35b60008054905090565b60008054905090565b6000819050919050565b608e81607d565b82525050565b600060208201905060a760008301846087565b9291505056fea2646970667358221220edfae8846973c67ee9b2d7cc0f68e38b9ff3169afa4aa12a28fa32dac6b0a82864736f6c63430008130033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c80636800635e146037578063e77866fa146051575b600080fd5b603d606b565b604051604891906094565b60405180910390f35b60576074565b604051606291906094565b60405180910390f35b60008054905090565b60008054905090565b6000819050919050565b608e81607d565b82525050565b600060208201905060a760008301846087565b9291505056fea2646970667358221220edfae8846973c67ee9b2d7cc0f68e38b9ff3169afa4aa12a28fa32dac6b0a82864736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

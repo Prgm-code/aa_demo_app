@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Persona2",
+  "sourceName": "contracts/class07/HerenciaDeInterfaces.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220b66ebae5ea5a3b6f6d0468ba55d786f8114444eff9a63223a61cf4bfebf0918864736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220b66ebae5ea5a3b6f6d0468ba55d786f8114444eff9a63223a61cf4bfebf0918864736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

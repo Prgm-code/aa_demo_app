@@ -1,0 +1,25 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "A",
+  "sourceName": "contracts/class06/Visibilizadores.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "funcExternaYHeredable",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "funcHeredablePublicaEInterna",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b5060818061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c806338a61ca214603757806353fcdd1d14603f575b600080fd5b603d6047565b005b60456049565b005b565b56fea264697066735822122002e0175211d6d1982ac89edfc10418b8996aea6f32b42fb1f5a6f6af20b08de264736f6c63430008130033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c806338a61ca214603757806353fcdd1d14603f575b600080fd5b603d6047565b005b60456049565b005b565b56fea264697066735822122002e0175211d6d1982ac89edfc10418b8996aea6f32b42fb1f5a6f6af20b08de264736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

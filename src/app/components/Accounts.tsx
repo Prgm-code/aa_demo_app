@@ -17,6 +17,7 @@ import AmountLabel from "./AmountLabel";
 import usePolling from "@/hooks/usePolling";
 import RelayTransaction from "./RelayTransaction";
 import GelatoTaskStatusLabel from "./GelatoTaskStatusLabel";
+import ContractActions from "./ContractActions";
 
 function Accounts() {
   const {
@@ -254,8 +255,9 @@ function Accounts() {
                     {!isRelayerLoading && !gelatoTaskId && <RelayTransaction />}
                   </>
                 )}
-              </Paper>
+                </Paper>
             </Grid>
+            <ContractActions />
           </>
         )}
       </Grid>

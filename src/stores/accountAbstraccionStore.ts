@@ -1,5 +1,4 @@
-
-import Chain from '../models/Chain';
+import Chain from "../models/Chain";
 import { create } from "zustand";
 import { Web3AuthModalPack, Web3AuthConfig } from "@safe-global/auth-kit";
 import { Web3AuthOptions } from "@web3auth/modal";
@@ -8,14 +7,11 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { Web3AuthEventListener } from "../packs/web3auth/types";
 import AccountAbstraction from "@safe-global/account-abstraction-kit-poc";
 import { GelatoRelayPack } from "@safe-global/relay-kit";
-import Safe,{ EthersAdapter } from '@safe-global/protocol-kit'
-import { MetaTransactionData, MetaTransactionOptions } from '@safe-global/safe-core-sdk-types';
-import getChain  from '@/utils/getChain';
-import { initialChain } from '@/chains/chains';
-
-
+import Safe, { EthersAdapter } from "@safe-global/protocol-kit";
+import { MetaTransactionData } from "@safe-global/safe-core-sdk-types";
+import getChain from "@/utils/getChain";
+import { initialChain } from "@/chains/chains";
 import dotenv from "dotenv";
-
 import {
   ADAPTER_EVENTS,
   CHAIN_NAMESPACES,
@@ -26,14 +22,11 @@ import {
 import GnosisSafeContractEthers from "@safe-global/safe-ethers-lib/dist/src/contracts/GnosisSafe/GnosisSafeContractEthers";
 dotenv.config();
 
-
-
 interface MetaTransactionOptions_ {
   gasLimit: string;
   gasToken?: string;
   isSponsored?: boolean;
 }
-
 
 const connectedHandler: Web3AuthEventListener = (data) =>
   console.log("CONNECTED", data);
@@ -45,12 +38,12 @@ interface AccountAbstractionState {
   isAuthenticated: boolean;
   initializeChain: boolean;
   isInitialized: boolean;
-  userInfo: any; // Define un tipo más específico si es posible
+  userInfo: any;
   web3Provider: ethers.providers.Web3Provider;
   web3AuthModalPack?: Web3AuthModalPack;
   UserInfo?: UserInfo;
   safes: string[];
-  safeSelected:  any;
+  safeSelected: any;
   safeAccountAbstraction?: AccountAbstraction;
   eoa: string;
   isDeployed: any;
@@ -60,7 +53,7 @@ interface AccountAbstractionState {
   chainId?: string;
   chain?: Chain;
   balance: undefined;
-  ethAdapter?: Promise<any>;
+  ethAdapter?: EthersAdapter;
   isRelayerLoading: boolean;
   gelatoTaskId?: string;
   relayError?: Error;
@@ -68,14 +61,13 @@ interface AccountAbstractionState {
   // Acciones
   clearTx: () => void;
   setChainId: (newChainId: string) => void;
-  relaySendTransaction: (address: string, amount: string) => Promise<void>;
+  relaySendTransaction: (address: string, amount: string, data: string) => Promise<void>;
   setBalance: (newBalance: any) => void;
   getSafeAddress: () => Promise<void>;
   initialize: () => Promise<void>;
   cleanUp: () => void;
   login: () => Promise<void>;
   logout: () => void;
-
 }
 
 // Crea la store con Zustand
@@ -93,7 +85,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
     safeSelected: null,
     safeAccountAbstraction: undefined,
     eoa: "",
-    isRelayerLoading: false, 
+    isRelayerLoading: false,
     gelatoTaskId: undefined,
     isDeployed: false,
     signer: {} as ethers.Signer,
@@ -103,9 +95,9 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
     balance: undefined,
     ethAdapter: undefined,
     relayError: undefined,
-    modalPackError: undefined,    
+    modalPackError: undefined,
     // Acciones
-    clearTx: () => set({ gelatoTaskId: undefined, relayError: undefined}),
+    clearTx: () => set({ gelatoTaskId: undefined, relayError: undefined }),
     setBalance: (newBalance) => set({ balance: newBalance }),
 
     setChainId: (newChainId) => {
@@ -114,20 +106,19 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
       set({ chainId: newChainId, chain: chain });
     },
 
-
     initialize: async () => {
       const { chainId } = get();
-      const  chain = getChain(chainId) || initialChain;
+      const chain = getChain(chainId) || initialChain;
       console.log("chain", chain);
       set({ chain: chain });
-  
+
       const options: Web3AuthOptions = {
         clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || "",
         web3AuthNetwork: "testnet",
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: chainId,
-          rpcTarget: chain?.rpcUrl  //"https://rpc.ankr.com/eth_goerli",
+          rpcTarget: chain?.rpcUrl, //"https://rpc.ankr.com/eth_goerli",
         },
         uiConfig: {
           theme: "dark",
@@ -178,22 +169,21 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
           disconnectedHandler
         );
 
-        set({ web3AuthModalPack: web3AuthModalPack, 
-              isInitialized: true,       
-        });
+        set({ web3AuthModalPack: web3AuthModalPack, isInitialized: true });
       } catch (error) {
         console.error("Error en initialize:", error);
       }
     },
 
     login: async () => {
-      const { web3AuthModalPack, isDeployed, getSafeAddress} = get(); //to get the current state
+      const { web3AuthModalPack, isDeployed, getSafeAddress } = get(); //to get the current state
       if (!web3AuthModalPack) {
         console.error("Web3AuthModalPack no está inicializado.");
-        set({ modalPackError: new Error("Web3AuthModalPack no está inicializado.") });
+        set({
+          modalPackError: new Error("Web3AuthModalPack no está inicializado."),
+        });
         return;
       }
-
       try {
         const authKitSignData = await web3AuthModalPack.signIn();
         console.log("authKitSignData", authKitSignData);
@@ -255,7 +245,7 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
         network: undefined,
         chainId: "0x5",
       });
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         window.location.reload();
       }
     },
@@ -277,7 +267,6 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
     getSafeAddress: async () => {
       const { web3Provider, safes, signer } = get();
       if (web3Provider && safes && signer) {
-    
         const relayPack = new GelatoRelayPack();
         const safeAccountAbstraction = new AccountAbstraction(signer);
 
@@ -294,66 +283,83 @@ const useAccountAbstractionStore = create<AccountAbstractionState>(
         if (isDeployed) {
           set({ isDeployed: true });
         }
-       /*  const ethAdapter = new EthersAdapter({
+        /*  const ethAdapter = new EthersAdapter({
           ethers,
           signerOrProvider: signer,
         }); */
-
-
 
         set({
           safeSelected: newSafe,
           safeAccountAbstraction: safeAccountAbstraction,
         }); //
-        
-
       }
     },
-   // / implement relay-kit using Gelatoto send eth to an address
-   relaySendTransaction: async (address: string, amount: string) => {
-    const { web3Provider, safeSelected, isDeployed } = get();
-    if (!web3Provider || !safeSelected) {
-      set({ isRelayerLoading: true });
-      set({ relayError: new Error("Web3 provider or Safe not initialized") });
-      console.error("Web3 provider or Safe not initialized");
-      return;
-    }
-  
-    try {
-      const signer = web3Provider.getSigner();
-      const relayPack = new GelatoRelayPack();
-      const safeAccountAbstraction = new AccountAbstraction(signer);
-  
-      await safeAccountAbstraction.init({ relayPack });
-  
-      const transactionData: MetaTransactionData[] = [
-        {
-          to: address,
-          data: '0x',
-          value: utils.parseUnits(amount, 'ether').toString(),
-          operation: 0, // OperationType.Call
-        },
-      ];
-  
-      const options: MetaTransactionOptions_ = {
-        isSponsored: false,
-        gasLimit: "6000000", // In this alpha version we need to manually set the gas limit
-        gasToken: ethers.constants.AddressZero, // Native token
-      };
-  
-      const gelatoTaskId = await safeAccountAbstraction.relayTransaction(transactionData, options);
-      set({ isRelayerLoading: false, gelatoTaskId: gelatoTaskId });
-      console.log(`Transaction relayed with Gelato Task ID: ${gelatoTaskId}`);
-      if (!isDeployed) {
-        await safeAccountAbstraction.isSafeDeployed()
-        set({ isDeployed: true });
+    // / implement relay-kit using Gelatoto send eth to an address
+    relaySendTransaction: async (address: string, amount: string , data: string) => {
+      const { web3Provider, safeSelected, isDeployed } = get();
+      if (!web3Provider || !safeSelected) {
+        set({ isRelayerLoading: true });
+        set({ relayError: new Error("Web3 provider or Safe not initialized") });
+        console.error("Web3 provider or Safe not initialized");
+        return;
       }
-    } catch (error) {
-      console.error(`Error relaying transaction: ${error}`);
-      set({ isRelayerLoading: false, relayError: error as Error });
+
+      try {
+        const signer = web3Provider.getSigner();
+        const relayPack = new GelatoRelayPack();
+        const safeAccountAbstraction = new AccountAbstraction(signer);
+
+        await safeAccountAbstraction.init({ relayPack });
+
+        const transactionData: MetaTransactionData[] = [
+          {
+            to: address,
+            data,
+            value: utils.parseUnits(amount, "ether").toString(),
+            operation: 0, // OperationType.Call
+          },
+        ];
+
+        const options: MetaTransactionOptions_ = {
+          isSponsored: false,
+          gasLimit: "6000000", // In this alpha version we need to manually set the gas limit
+          gasToken: ethers.constants.AddressZero, // Native token
+        };
+
+        const gelatoTaskId = await safeAccountAbstraction.relayTransaction(
+          transactionData,
+          options
+        );
+        set({ isRelayerLoading: false, gelatoTaskId: gelatoTaskId });
+        console.log(`Transaction relayed with Gelato Task ID: ${gelatoTaskId}`);
+        if (!isDeployed) {
+          await safeAccountAbstraction.isSafeDeployed();
+          set({ isDeployed: true });
+        }
+      } catch (error) {
+        console.error(`Error relaying transaction: ${error}`);
+        set({ isRelayerLoading: false, relayError: error as Error });
+      }
+    },
+
+    createEthAdapter: async () => {
+      const { web3Provider, signer } = get();
+      if (!web3Provider || !signer) {
+        set({ relayError: new Error("Web3 provider or Safe not initialized") });
+        console.error("Web3 provider or Safe not initialized");
+        return;
+      }
+
+        const ethAdapter = new EthersAdapter({
+          ethers,
+          signerOrProvider: signer,
+        });
+        set({ ethAdapter: ethAdapter });
+
     }
-  },
   })
+
+
 );
 
 export default useAccountAbstractionStore;

@@ -41,7 +41,8 @@ const checkBalance = () => {
     setError(""); // Reset any previous errors
     try {
      checkBalance();
-      await relaySendTransaction(recipientAddress, amount);
+     const data = '0x'
+      await relaySendTransaction(recipientAddress, amount, data);
     } catch (err: any) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
     }

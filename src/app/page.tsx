@@ -1,22 +1,14 @@
 "use client";
 import React, { useState ,useEffect } from "react";
-import {
-  Modal,
-  Box,
-  Backdrop,
-  Fade,
-  Typography,
-  Button,
-  CircularProgress,
-} from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { SafeThemeProvider } from "@safe-global/safe-react-components";
-import AppBar from "./components/AppBar";
+import AppBar from "./components/AppBar/AppBar";
 import Accounts from "./components/Accounts";
 import { CssBaseline } from "@mui/material";
 import useAccountAbstractionStore from "@/stores/accountAbstraccionStore";
 import dotenv from "dotenv";
 import ChainSelectModal from "./components/ChainSelectModal";
+import ContractActions from "./components/ContractActions";
 dotenv.config();
 
 function App() {
@@ -43,6 +35,7 @@ function App() {
             <ChainSelectModal />
             <AppBar />
             <Accounts />
+            
           </div>
         </ThemeProvider>
       )}

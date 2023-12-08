@@ -1,0 +1,17 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ContratoComplejo",
+  "sourceName": "contracts/class07/EjercicioComunicacionIntercontrato.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "Complejo",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122074329ce5e2d2ae5dcd15717c3a5a5e3ab28c173379f09d3d33ad3b432a04e7f264736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea264697066735822122074329ce5e2d2ae5dcd15717c3a5a5e3ab28c173379f09d3d33ad3b432a04e7f264736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

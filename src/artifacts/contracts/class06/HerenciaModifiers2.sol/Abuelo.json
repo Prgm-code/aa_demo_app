@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Abuelo",
+  "sourceName": "contracts/class06/HerenciaModifiers2.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212206b54f623a11b6d920164e19e9dd43eb9caf885dce2085a45dc3b55f9eda85fa864736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212206b54f623a11b6d920164e19e9dd43eb9caf885dce2085a45dc3b55f9eda85fa864736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

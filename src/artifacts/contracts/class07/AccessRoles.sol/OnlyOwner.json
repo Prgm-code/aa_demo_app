@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "OnlyOwner",
+  "sourceName": "contracts/class07/AccessRoles.sol",
+  "abi": [],
+  "bytecode": "0x6080604052336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550348015604f57600080fd5b50603f80605d6000396000f3fe6080604052600080fdfea2646970667358221220aef1a4e353b075378b04989940b1429af7260b77995dbad8aaab37742693458e64736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220aef1a4e353b075378b04989940b1429af7260b77995dbad8aaab37742693458e64736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

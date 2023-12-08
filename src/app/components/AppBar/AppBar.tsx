@@ -8,15 +8,13 @@ import {
   Avatar,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import useAccountAbstractionStore from "../../stores/accountAbstraccionStore";
+import useAccountAbstractionStore from "../../../stores/accountAbstraccionStore";
 import { EthHashInfo } from "@safe-global/safe-react-components";
 
 
 const AppBar = () => {
   const {
     web3Provider,
-    initialize,
-    cleanUp,
     login,
 
     logout,
@@ -24,7 +22,6 @@ const AppBar = () => {
     userInfo,
     eoa,
     safes,
-    // Asegúrate de incluir cualquier otra parte del estado que necesites
   } = useAccountAbstractionStore();
 
 
@@ -45,7 +42,7 @@ const AppBar = () => {
       <Box mr={5}>
         {isAuthenticated ? (
           <Box display="flex" alignItems="center" >
-            {/* Agrega el Avatar aquí con un pequeño margen a la derecha */}
+  
             <Avatar
               src={userInfo.profileImage}
               alt={userInfo.name || userInfo.email}
@@ -58,9 +55,9 @@ const AppBar = () => {
             <Typography 
             variant="caption"
             sx={{
-              fontSize: '0.75rem', // Reduce el tamaño de la fuente
-              color: 'black', // Cambia el color del texto
-              mt: 0.5, // Margen superior para separar de la línea del nombre
+              fontSize: '0.75rem', 
+              color: 'black', 
+              mt: 0.5, 
             }}
             >
             <EthHashInfo
@@ -79,8 +76,8 @@ const AppBar = () => {
             <Button
               variant="outlined"
               onClick={logout}
-              size="small" // Esto hace el botón más pequeño
-              sx={{ ml: 2, py: 0.5, px: 2 }} // Ajusta el padding vertical (py) y horizontal (px) según necesites
+              size="small" 
+              sx={{ ml: 2, py: 0.5, px: 2 }} 
             >
               Logout
             </Button>
@@ -89,8 +86,8 @@ const AppBar = () => {
           <Button
             variant="contained"
             onClick={login}
-            size="small" // Esto hace el botón más pequeño
-            sx={{ ml: 2, py: 0.5, px: 2 }} // Ajusta el padding vertical (py) y horizontal (px) según necesites
+            size="small" 
+            sx={{ ml: 2, py: 0.5, px: 2 }} 
           >
             Login
           </Button>

@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Counters",
+  "sourceName": "contracts/class10/MiPrimerNFT.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220cc12b632119a5fcf01d64cfe2869818b145d28e595d029469e967fb15e905ef564736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220cc12b632119a5fcf01d64cfe2869818b145d28e595d029469e967fb15e905ef564736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
